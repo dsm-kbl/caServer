@@ -1,0 +1,54 @@
+<h2>User List</h2><hr/>
+<div class = "row">
+    <table class="table table-bordered table-striped">
+        <tr>
+            <th>Last Name</th><th>First Name</th><th># of Cups - Current</th><th>Balance</th><th>Reset</th>
+        </tr>
+        <tr ng-repeat="user in userData">
+            <td>{{user.lastName}}</td><td>{{user.firstName}}</td><td>{{user.numOfCups}}</td><td>{{user.balance}}</td>
+            <td><input class="btn btn-primary" type="submit" value="Reset"><input class="btn btn-danger" type="submit" value="Delete"></td>
+        </tr>
+    </table>
+</div>
+
+<form ng-submit="addUser()" name="myForm" class="form-horizontal">
+    <h3>Add User</h3><hr/>
+    <p class = "text-warning">{{error_message}}</p>
+    <div class="form-group">
+         <label class="col-sm-2">First Name:</label>
+         <div class="col-sm-3">
+                <input type="text" class = "form-control" ng-model="user.firstName" name="firstName" required placeholder="First Name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2">Last Name:</label>
+        <div class="col-sm-3">
+                <input type="text" class = "form-control" ng-model="user.lastName" name="lastName" required placeholder="Last Name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2">Email:</label>
+        <div class="col-sm-3">
+                <input type="text" class = "form-control" ng-model="user.email" name="email" required placeholder="Email Address">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2"># of Cups:</label>
+        <div class="col-sm-3">
+                <input type="text" class = "form-control" ng-model="user.numOfCups" name="numOfCups" required placeholder="Num of Cups">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2">Balance:</label>
+        <div class="col-sm-3">
+                <input type="text" class = "form-control" ng-model="user.balance" name="balance" required placeholder="Current Balance">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2">Photo:</label>
+        <div class="col-sm-3">
+                <input type="file" ng-model="user.photo" placeholder="Upload Photo">
+        </div>
+    </div>
+    <input type = "submit" value="Add User" class="btn btn-success"/>
+</form>

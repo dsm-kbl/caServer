@@ -10,7 +10,7 @@
     <link href="stylesheets/styles.css" rel="stylesheet">
 </head>
 <body ng-app="coffeeApp">
-        <div id='main' class = "container" ng-controller="addController">
+        <div id='main' class = "container" ng-controller="mainController">
             <h2>User List</h2><hr/>
             <div class = "row">
                     <table class="table table-bordered table-striped">
@@ -19,7 +19,8 @@
                         </tr>
                         <tr ng-repeat="user in userData">
                             <td>{{user.lastName}}</td><td>{{user.firstName}}</td><td>{{user.numOfCups}}</td><td>{{user.balance}}</td>
-                            <td><input class="btn btn-primary" type="submit" value="Reset"></td>
+                            <td><input class="btn btn-primary" type="submit" value="Reset">
+                                    <input class="btn btn-danger" type="submit" value="Delete"></td>
                         </tr>
                     </table>
             </div>

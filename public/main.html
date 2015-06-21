@@ -1,11 +1,11 @@
 <div class = "row">
     <div class="col-lg-3 col-sm-6 col-md-4 text-center" ng-repeat="user in userData">
-        <a href="#" class="thumbnail">
+        <a href="#" class="thumbnail" ng-click=userPage({{user.email}})>
           <img src="http://placehold.it/100" alt = "user image" class="img-rounded img-responsive img-center"><br/>
           <div class="caption">
                 <h3>{{user.fullName}}</h3>
                 <i class="fa fa-coffee"> - </i>{{user.numOfCups}}<br/>
-                <i class="fa fa-eur">  - </i>{{user.currentBalance}}
+                <i class="fa fa-eur">  - </i>{{user.balance}}
             </div>
         </a>
     </div>

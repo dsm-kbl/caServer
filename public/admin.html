@@ -6,7 +6,11 @@
         </tr>
         <tr ng-repeat="user in userData">
             <td>{{user.lastName}}</td><td>{{user.firstName}}</td><td>{{user.numOfCups}}</td><td>{{user.balance}}</td>
-            <td><input class="btn btn-primary" type="submit" value="Reset"><input class="btn btn-danger" type="submit" value="Delete"></td>
+            <td>
+                <input class="btn btn-primary" type="submit" value="Reset">
+
+                <input class="btn btn-danger" type="submit" value="Delete">
+            </td>
         </tr>
     </table>
 </div>

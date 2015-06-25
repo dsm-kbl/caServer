@@ -5,7 +5,7 @@
             <th>Last Name</th><th>First Name</th><th># of Cups - Current</th><th>Balance</th><th>Reset</th>
         </tr>
         <tr ng-repeat="user in userData">
-            <td>{{user.lastName}}</td><td>{{user.firstName}}</td><td>{{user.numOfCups}}</td><td>{{user.balance}}</td>
+            <td>{{user.lastName}}</td><td>{{user.firstName}}</td><td>{{user.numOfCups}}</td><td>{{user.currentBalance}}  <i class="fa fa-eur"></i> </td>
             <td>
                 <input class="btn btn-primary" type="submit" value="Reset">
 
@@ -45,7 +45,7 @@
     <div class="form-group">
         <label class="col-sm-2">Balance:</label>
         <div class="col-sm-3">
-                <input type="text" class = "form-control" ng-model="user.balance" name="balance" required placeholder="Current Balance">
+                <input type="text" class = "form-control" ng-model="user.currentBalance" name="balance" required placeholder="Current Balance">
         </div>
     </div>
     <div class="form-group">

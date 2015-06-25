@@ -18,14 +18,44 @@ app.config(function($routeProvider){
         });
 });
 
-app.factory('userService', function($resource){
+/*app.factory('userService', function($resource){
     return $resource('/api/users/');
 });
 
-app.controller('mainController', function($scope, userService){
+app.factory('indUserService', function($resource){
+    return  $resource('/api/users/:id', {id: '@_id'});
+});
+
+app.controller('mainController', function($scope, userService, indUserService){
 
          $scope.userData = userService.query();
-         console.log($scope.userData);
+         //console.log($scope.userData);
+
+         $scope.individualUser = function($event, user){
+            $scope.individualData = indUserService.query();
+            console.log("individual data " + $scope.individualData);
+         };
+});*/
+
+/*app.factory('api', ['$resource',
+ function($resource) {
+  return {
+    userService: $resource('/api/users/:id'),
+    indUserService:  $resource('/api/users/:id', {id: '@_id'})
+  };
+}]);*/
+
+app.factory('userService', function($resource){
+    return $resource('/api/users/:id');
+});
+
+app.controller('mainController', function($scope, userService){
+         $scope.userData = userService.query();
+         //console.log($scope.userData);
+         $scope.getIndividualUser = function(userID){
+            $scope.currentUser = userService.get({id : userID});
+            console.log($scope.currentUser);
+         };
 });
 
 app.controller('addController', function($scope, userService){

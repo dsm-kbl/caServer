@@ -1,13 +1,27 @@
-var app = angular.module('coffeeApp', ['ngRoute', 'ngResource']);
+var app = angular.module('coffeeApp', ['ui.router', 'ngResource']);
 
-app.config(function($routeProvider){
-    $routeProvider
-        .when('/', {
-            templateUrl: 'main.html',
+app.config(function($stateProvider, $urlRouterProvider){
+    $urlRouterProvider.otherwise("/");
+    $stateProvider
+        .state('home', {
+            url: '/',
+            templateUrl: "main.html",
             controller: 'mainController'
         })
 
-        .when('/user', {
+        .state('user', {
+            url: '/user:id',
+            templateUrl: "individualUser.html",
+            controller: 'mainController'
+        })
+
+        .state('admin', {
+            url: '/admin',
+            templateUrl: "admin.html",
+            controller: 'addController'
+        });
+
+        /*.when('/user', {
             templateUrl: 'individualUser.html',
             controller: 'mainController'
         })
@@ -15,7 +29,7 @@ app.config(function($routeProvider){
         .when('/admin', {
             templateUrl: 'admin.html',
             controller: 'addController'
-        });
+        });*/
 });
 
 /*app.factory('userService', function($resource){
@@ -46,15 +60,26 @@ app.controller('mainController', function($scope, userService, indUserService){
 }]);*/
 
 app.factory('userService', function($resource){
-    return $resource('/api/users/:id');
+    return $resource('/api/users/:id', { id: '@_id' }
+        /*{
+          update: {
+              method: 'PUT'
+          }
+        }*/
+      );
 });
 
-app.controller('mainController', function($scope, userService){
+app.controller('mainController', function($scope, $stateParams, userService){
          $scope.userData = userService.query();
-         //console.log($scope.userData);
-         $scope.getIndividualUser = function(userID){
-            $scope.currentUser = userService.get({id : userID});
-            console.log($scope.currentUser);
+         $scope.currentUser = userService.get({id : $stateParams.id});
+         $scope.addCoffee = function(){
+            var coffeeNum = prompt("Number of Cups", 1);
+            var amount = coffeeNum*0.25;
+            console.log(coffeeNum, amount);
+            $scope.query = function() {
+                $stateParams.numOfCups += coffeeNum;
+                $stateParams.balance += amount;
+            };
          };
 });
 

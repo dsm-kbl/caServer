@@ -1,11 +1,19 @@
 <div class = "row">
-    <div class="col-lg-3 col-sm-6 col-md-4 text-center">
-          <h3> Welcome {{currentUser.fullName}}</h3>
-          <img src="http://placehold.it/100" alt = "user image" class="img-rounded img-responsive img-center"><br/>
-          <div class="caption">
-                <h3>{{currentUser}}</h3>
-                {{currentUser.numOfCups}}<br/>
-                {{currentUser.balance}}
-            </div>
+    <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+        <hr class="section-heading-spacer">
+        <div class="clearfix"></div>
+        <h2 class="section-heading">Welcome {{currentUser.fullName}}</h2>
+        <p class="lead" >
+            Number of Cups - <b>{{currentUser.numOfCups}}</b><br/>
+            Current Balance - <b>{{currentUser.balance}}</b> <i class="fa fa-eur"></i><br/><br/>
+            <a class="btn btn-primary" ng-click="addCoffee(num)">Take Coffee Now</a>
+            <hr/>
+            <h4><u>Some coffee history</u></h4>
+             Total number of cups drank - {{currentUser.totalNumOfCups}}<br/>
+             Total money spent on Coffee - {{currentUser.totalMoneySpent}} <i class="fa fa-eur"></i>
+        </p>
+    </div>
+    <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+        <img class="img-rounded img-responsive" src="http://placehold.it/100" alt="user image">
     </div>
 </div>

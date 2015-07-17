@@ -17,7 +17,7 @@ var userSchema = new mongoose.Schema({
         match: [/.+\@.+\..+/, "Please fill a valid e-mail address"]
     },
     numOfCups: Number,
-    balance: Number,
+    currentBalance: Number,
     totalNumOfCups: Number,
     totalMoneySpent: Number
 });

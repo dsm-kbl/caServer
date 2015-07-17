@@ -4,13 +4,14 @@
         <div class="clearfix"></div>
         <h2 class="section-heading">Welcome {{currentUser.fullName}}</h2>
         <p class="lead" >
-            Number of Cups - <b>{{currentUser.numOfCups}}</b><br/>
-            Current Balance - <b>{{currentUser.balance}}</b> <i class="fa fa-eur"></i><br/><br/>
-            <a class="btn btn-primary" ng-click="addCoffee(num)">Take Coffee Now</a>
+            Number of Cups : <b>{{currentUser.numOfCups}}</b><br/>
+            Current Balance : <b>{{currentUser.currentBalance}}</b> <i class="fa fa-eur"></i><br/><br/>
+            <a class="btn btn-primary" ng-click="addCoffee()"><i class="fa fa-coffee"></i> Take Coffee Now</a>
+            <a class="btn btn-primary" ui-sref ="home"><i class="fa fa-home"></i> Home</a>
             <hr/>
             <h4><u>Some coffee history</u></h4>
-             Total number of cups drank - {{currentUser.totalNumOfCups}}<br/>
-             Total money spent on Coffee - {{currentUser.totalMoneySpent}} <i class="fa fa-eur"></i>
+             Total number of cups drank :  {{currentUser.totalNumOfCups}}<br/>
+             Total money spent on Coffee :  {{currentUser.totalMoneySpent}} <i class="fa fa-eur"></i>
         </p>
     </div>
     <div class="col-lg-5 col-sm-pull-6  col-sm-6">

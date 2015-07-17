@@ -4,48 +4,57 @@
         <tr>
             <th>Last Name</th><th>First Name</th><th># of Cups - Current</th><th>Balance</th><th>Reset</th>
         </tr>
-        <tr ng-repeat="user in userData">
+        <tr ng-repeat="user in userData | orderBy: 'lastName':reverse">
             <td>{{user.lastName}}</td><td>{{user.firstName}}</td><td>{{user.numOfCups}}</td><td>{{user.currentBalance}}  <i class="fa fa-eur"></i> </td>
             <td>
-                <input class="btn btn-primary" type="submit" value="Reset">
+                <input class="btn btn-primary" type="submit" ng-click="editUser(user._id)" value="Reset">
 
-                <input class="btn btn-danger" type="submit" value="Delete">
+                <input class="btn btn-danger" type="submit" ng-click="deleteUser(user._id)" value="Delete">
             </td>
         </tr>
     </table>
 </div>
 
+<hr>
+<button class="btn btn-success" ng-click="editUser('new')">
+<span class="glyphicon glyphicon-user"></span>  Create New User
+</button>
+<hr>
+
+
+<h3 ng-show="edit">Create User</h3>
+<h3 ng-hide="edit">Edit User</h3><hr/>
+
 <form ng-submit="addUser()" name="myForm" class="form-horizontal">
-    <h3>Add User</h3><hr/>
     <p class = "text-warning">{{error_message}}</p>
     <div class="form-group">
          <label class="col-sm-2">First Name:</label>
          <div class="col-sm-3">
-                <input type="text" class = "form-control" ng-model="user.firstName" name="firstName" required placeholder="First Name">
+                <input type="text" class = "form-control" ng-model="individualData.firstName" ng-disabled="!edit" name="firstName" required placeholder="First Name">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2">Last Name:</label>
         <div class="col-sm-3">
-                <input type="text" class = "form-control" ng-model="user.lastName" name="lastName" required placeholder="Last Name">
+                <input type="text" class = "form-control" ng-model="individualData.lastName" ng-disabled="!edit" name="lastName" required placeholder="Last Name">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2">Email:</label>
         <div class="col-sm-3">
-                <input type="text" class = "form-control" ng-model="user.email" name="email" required placeholder="Email Address">
+                <input type="text" class = "form-control" ng-model="individualData.email" ng-disabled="!edit" name="email" required placeholder="Email Address">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2"># of Cups:</label>
         <div class="col-sm-3">
-                <input type="text" class = "form-control" ng-model="user.numOfCups" name="numOfCups" required placeholder="Num of Cups">
+                <input type="text" class = "form-control" ng-model="individualData.numOfCups" name="numOfCups" required placeholder="Num of Cups">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2">Balance:</label>
         <div class="col-sm-3">
-                <input type="text" class = "form-control" ng-model="user.currentBalance" name="balance" required placeholder="Current Balance">
+                <input type="text" class = "form-control" ng-model="individualData.currentBalance" name="balance" required placeholder="Current Balance">
         </div>
     </div>
     <div class="form-group">
@@ -54,5 +63,8 @@
                 <input type="file" ng-model="user.photo" placeholder="Upload Photo">
         </div>
     </div>
-    <input type = "submit" value="Add User" class="btn btn-success"/>
+    <!-- <input type = "submit" value="Save Changes" class="btn btn-success"/> -->
+    <button class="btn btn-success" ng-disabled="error || incomplete">
+        <span class="glyphicon glyphicon-save"></span>  Save Changes
+    </button>
 </form>

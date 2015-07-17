@@ -6,12 +6,12 @@ var User = mongoose.model('User');
 /* GET home page.
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
-});*/
+});
 router.use(function(req, res, next){
     if(req.method === "GET"){
         return next();
     }
-});
+});*/
 
 
 router.route('/users')
@@ -35,9 +35,9 @@ router.route('/users')
         user.lastName = req.body.lastName;
         user.email = req.body.email;
         user.numOfCups = req.body.numOfCups;
-        user.balance = req.body.balance;
+        user.currentBalance = req.body.currentBalance;
         user.totalNumOfCups = req.body.numOfCups;
-        user.totalMoneySpent = req.body.balance;
+        user.totalMoneySpent = req.body.currentBalance;
 
         user.save(function(err, user){
             if(err){
@@ -49,9 +49,9 @@ router.route('/users')
     });
 
 router.route('/users/:id')
-
     //returns a particular user
     .get(function(req, res){
+        console.log("Reaches the get by ID");
         User.findById(req.params.id, function(err, user){
             if(err){
                 res.send(err);
@@ -68,11 +68,15 @@ router.route('/users/:id')
             if(err){
                 res.send(err);
             }
-            user.firstName = req.body.firstName;
+
+            //console.log( "from api", user);
+            /*user.firstName = req.body.firstName;
             user.lastName = req.body.lastName;
-            user.email = req.body.email;
+            user.email = req.body.email;*/
             user.numOfCups = req.body.numOfCups;
-            user.balance = req.body.balance;
+            user.totalNumOfCups = req.body.totalNumOfCups;
+            user.currentBalance = req.body.currentBalance;
+            user.totalMoneySpent = req.body.totalMoneySpent;
 
             user.save(function(err, user){
                 if(err)

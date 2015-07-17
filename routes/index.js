@@ -11,4 +11,8 @@ router.get('/admin', function(req, res, next){
     res.render('admin', { title: "Admin Area"});
 });
 
+// router.put('/api/users/:id', function(req, res, next){
+//      res.render('api/user/id', { title: "Coffee Time"});
+// });
+
 module.exports = router;

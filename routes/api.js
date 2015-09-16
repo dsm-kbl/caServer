@@ -1,21 +1,14 @@
 var express = require('express');
+var app = express();
 var router = express.Router();
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var upload = require('./upload');
 
-/* GET home page.
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-router.use(function(req, res, next){
-    if(req.method === "GET"){
-        return next();
-    }
-});*/
-
+router.route('/upload/image')
+    .post(upload.postImage);
 
 router.route('/users')
-
     //returns all users
     .get(function(req, res){
         User.find(function(err, data){
@@ -29,7 +22,9 @@ router.route('/users')
     })
 
     //add user
+    //.post(function(req, res){
     .post(function(req, res){
+
         var user = new User();
         user.firstName = req.body.firstName;
         user.lastName = req.body.lastName;
@@ -38,6 +33,7 @@ router.route('/users')
         user.currentBalance = req.body.currentBalance;
         user.totalNumOfCups = req.body.numOfCups;
         user.totalMoneySpent = req.body.currentBalance;
+        user.photo = req.body.photo;
 
         user.save(function(err, user){
             if(err){

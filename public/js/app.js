@@ -1,4 +1,4 @@
-var app = angular.module('coffeeApp', ['ui.router', 'ngResource']);
+var app = angular.module('coffeeApp', ['ui.router', 'ngResource', 'ngFileUpload']);
 
 app.config(function($stateProvider, $urlRouterProvider){
     $urlRouterProvider.otherwise("/");
@@ -20,17 +20,22 @@ app.config(function($stateProvider, $urlRouterProvider){
             templateUrl: "admin.html",
             controller: 'adminController'
         });
-
-        /*.when('/user', {
-            templateUrl: 'individualUser.html',
-            controller: 'mainController'
-        })
-
-        .when('/admin', {
-            templateUrl: 'admin.html',
-            controller: 'addController'
-        });*/
 });
+
+var fileName = "";
+
+app.directive("fdInput", [function(){
+      return{
+        link: function(scope, element, attrs){
+          element.on('change', function(evt){
+              var files = evt.target.files;
+              fileName = files[0].name;
+              console.log(files[0].name);
+              console.log(files[0].size);
+          });
+        }
+      }
+  }]);
 
 app.factory('userService', function($resource){
     //return $resource('/api/users/:id', { id: '@id' },
@@ -66,11 +71,12 @@ app.controller('viewController', function($scope, $stateParams, userService){
 
 });
 
-app.controller('adminController', function($scope, $stateParams, userService){
+app.controller('adminController', function($scope, $resource, $stateParams, userService, Upload, $timeout){
         $scope.userData = userService.query();
         $scope.edit = true;
         $scope.error = false;
         $scope.incomplete = false;
+
 
         $scope.editUser = function(resetId){
             if(resetId == 'new'){
@@ -83,13 +89,10 @@ app.controller('adminController', function($scope, $stateParams, userService){
               $scope.edit = false;
               $scope.individualData = userService.get({id : resetId});
               console.log($stateParams);
-
-              //userService.update({_id: $scope.currentUser._id}, $scope.currentUser);
             }
-
         };
 
-        $scope.$watch('individualData.firstName',function() {$scope.test();});
+        /*$scope.$watch('individualData.firstName',function() {$scope.test();});
         $scope.$watch('individualData.lastName',function() {$scope.test();});
         $scope.$watch('individualData.email', function() {$scope.test();});
         $scope.$watch('individualData.numOfCups', function() {$scope.test();});
@@ -97,16 +100,152 @@ app.controller('adminController', function($scope, $stateParams, userService){
 
         $scope.test = function() {
           $scope.incomplete = false;
-          if ($scope.edit && (!$scope.individualData.firstName.length || !$scope.individualData.lastName.length || !$scope.individualData.email.length || !$scope.individualData.numOfCups.length || !$scope.currentBalance.length)) {
+          if ($scope.edit && (!individualData.firstName.length || !$scope.individualData.lastName.length || !$scope.individualData.email.length || !$scope.individualData.numOfCups.length || !$scope.currentBalance.length)) {
                $scope.incomplete = true;
           }
-        };
+        };*/
 
 
         $scope.newUser = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: ''};
         $scope.error_message = '';
 
+        $scope.onFileSelect = function(file) {
+          file.upload = Upload.upload({
+            url: '/api/upload/image',
+            method: 'POST',
+            headers: {
+              'my-header': 'my-header-value'
+            },
+            fields: { firstName : $scope.individualData.firstName },
+            file: file,
+            fileFormDataName: 'file'
+          });
+
+        file.upload.then(function(response){
+          $timeout(function () {
+              file.result = response.data;
+            });
+          }, function (response) {
+            if (response.status > 0)
+              $scope.errorMsg = response.status + ': ' + response.data;
+        });
+
+        file.upload.progress(function (evt) {
+          // Math.min is to fix IE which reports 200% sometimes
+          file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+        });
+      };
+
+
+
+
+
+       /*$scope.onFileSelect = function(image) {
+          $scope.uploadInProgress = true;
+          $scope.uploadProgress = 0;
+
+          if (angular.isArray(image)) {
+            image = image[0];
+          }
+
+          $scope.upload = Upload.upload({
+            url: '/upload/image',
+            method: 'POST',
+            data: {
+              type: 'profile'
+            },
+            file: image
+          }).progress(function(event) {
+            $scope.uploadProgress = Math.floor(event.loaded / event.total);
+            $scope.$apply();
+          }).success(function(data, status, headers, config) {
+                  $scope.uploadInProgress = false;
+                  // If you need uploaded file immediately
+                  $scope.uploadedImage = JSON.parse(data);
+          }).error(function(err) {
+            $scope.uploadInProgress = false;
+            console.log('Error uploading file: ' + err.message || err);
+          });
+        };*/
+
+       /*$scope.onFileSelect = function(image){
+            console.log(image);
+            if (angular.isArray(image)) {
+                  image = image[0];
+              }
+
+              // This is how I handle file types in client side
+              if (image.type !== 'image/png' && image.type !== 'image/jpeg') {
+                  alert('Only PNG and JPEG are accepted.');
+                  return;
+              }
+
+              $scope.uploadInProgress = true;
+              $scope.uploadProgress = 0;
+
+              $scope.upload = $upload.upload({
+                  url: '/upload/image',
+                  method: 'POST',
+                  file: image
+              }).progress(function(event) {
+                  $scope.uploadProgress = Math.floor(event.loaded / event.total);
+                  $scope.$apply();
+              }).success(function(data, status, headers, config) {
+                  $scope.uploadInProgress = false;
+                  // If you need uploaded file immediately
+                  $scope.uploadedImage = JSON.parse(data);
+              }).error(function(err) {
+                  $scope.uploadInProgress = false;
+                  console.log('Error uploading file: ' + err.message || err);
+              });
+        };*/
+
+
         $scope.addUser = function(){
+            //$scope.onFileSelect();
+
+
+
+
+        /*$scope.addUser = function(file){
+            file.upload = Upload.upload({
+              url: 'api/users',
+              method: 'POST',
+              headers: {
+                    'my-header': 'my-header-value'
+              },
+              fields: {firstname: $scope.individualData.firstName,
+                          lastName: $scope.individualData.lastName,
+                          email : $scope.individualData.email,
+                          numOfCups : $scope.individualData.numOfCups,
+                          currentBalance : $scope.individualData.currentBalance,
+                          totalNumOfCups : $scope.individualData.numOfCups,
+                          totalMoneySpent : $scope.individualData.currentBalance
+              },
+              file: file,
+              fileFormDataName: 'myFile'
+        });
+
+            if(file.type !== 'image/png' && file.type !== 'image/jpeg'){
+              alert('Only PNG and JPEG are accepted');
+              return;
+            }
+
+            file.upload.then(function(response){
+              $timeout(function(){
+                file.result = response.data;
+              });
+            }, function(response){
+              if(response.status > 0)
+                  $scope.errorMsg = response.status + ': ' + response.data;
+            });
+
+            file.upload.progress(function(evt){
+              file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+            });*/
+
+
+
             $scope.newUser.firstName = $scope.individualData.firstName;
             $scope.newUser.lastName = $scope.individualData.lastName;
             $scope.newUser.email = $scope.individualData.email;
@@ -114,14 +253,25 @@ app.controller('adminController', function($scope, $stateParams, userService){
             $scope.newUser.currentBalance = $scope.individualData.currentBalance;
             $scope.newUser.totalNumOfCups = $scope.individualData.numOfCups;
             $scope.newUser.totalMoneySpent = $scope.individualData.currentBalance;
+            $scope.newUser.photo = fileName;
+            console.log($scope.newUser);
             userService.save($scope.newUser, function(){
                 $scope.userData = userService.query();
-                $scope.newUser = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: ''};
+                $scope.newUser = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: '', photo: ""};
+                $scope.individualData = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: '', photo: ""};
+                //$scope.newUser = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: ''};
             });
         };
 
+        $scope.deleteUser = function(deleteId){
+            if(window.confirm('Really delete this user?')){
 
-
-
-            //$scope.error_message = "Add request for " + $scope.user.firstName;
+              userService.delete({ id: deleteId });
+              $scope.userData = userService.query();
+            }
+            else{
+              $scope.userData = userService.query();
+            }
+        };
+        //$scope.error_message = "Add request for " + $scope.user.firstName;
 });

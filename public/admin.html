@@ -25,7 +25,7 @@
 <h3 ng-show="edit">Create User</h3>
 <h3 ng-hide="edit">Edit User</h3><hr/>
 
-<form ng-submit="addUser()" name="myForm" class="form-horizontal">
+<form name="myForm" enctype="multipart/form-data" class="form-horizontal">
     <p class = "text-warning">{{error_message}}</p>
     <div class="form-group">
          <label class="col-sm-2">First Name:</label>
@@ -60,11 +60,22 @@
     <div class="form-group">
         <label class="col-sm-2">Photo:</label>
         <div class="col-sm-3">
-                <input type="file" ng-model="user.photo" placeholder="Upload Photo">
+                <input type="file" ngf-select ng-model = "picfile" name="file" accept="image/png, image/jpeg, image/jpg">
+                <!-- <input type="file" data-ng-file-select="onFileSelect($files)" accept="image/png, image/jpeg, image/jpg">
+                <span data-ng-if="uploadInProgress">Upload progress: {{ uploadProgress }}</span>
+                <img data-ng-src="uploadedImage" data-ng-if="uploadedImage"> -->
+                <!-- <input type="file" files-model="individualData.photo" placeholder="Upload Photo"> -->
+                <!-- <input type="file" multiple="multiple" name = "upload" ng-model="individualData.photo" placeholder="Upload Photo"> -->
         </div>
     </div>
     <!-- <input type = "submit" value="Save Changes" class="btn btn-success"/> -->
-    <button class="btn btn-success" ng-disabled="error || incomplete">
+    <button class="btn btn-success" ng-click="onFileSelect(picfile)" ng-disabled="error || incomplete || form.$invalid">
         <span class="glyphicon glyphicon-save"></span>  Save Changes
     </button>
+    <span class="progress" ng-show="picFile.progress >= 0">
+        <div style="width:{{picFile.progress}}%"
+            ng-bind="picFile.progress + '%'"></div>
+      </span>
+      <span ng-show="picFile.result">Upload Successful</span>
+      <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
 </form>

@@ -19,7 +19,15 @@ var userSchema = new mongoose.Schema({
     numOfCups: Number,
     currentBalance: Number,
     totalNumOfCups: Number,
-    totalMoneySpent: Number
+    totalMoneySpent: Number,
+    /*photo: {
+        fileName : String,
+        url: String,
+        contentType: String,
+        size: String,
+        dimensions: String
+    }*/
+    photo: String
 });
 
 userSchema.virtual('fullName').get(function(){

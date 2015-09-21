@@ -3,7 +3,7 @@
         <!-- <a ui-sref="user" class="thumbnail" ng-click = "getIndividualUser(user.id)"> -->
         <!-- <a ui-sref="user({id:user._id})" class="thumbnail" ng-click = "getIndividualUser(user.id)"> -->
         <a ui-sref="user({id:user._id})" class="thumbnail">
-          <img src="http://placehold.it/100" alt = "user image" class="img-rounded img-responsive img-center"><br/>
+          <img ng-src="{{user.photo}}" alt = "http://placehold.it/100" class="img-rounded img-responsive img-center"><br/>
           <div class="caption">
                 <h3>{{user.fullName}}</h3>
                 <i class="fa fa-coffee"> : </i>{{user.numOfCups}}<br/>

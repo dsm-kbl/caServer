@@ -1,4 +1,5 @@
 var app = angular.module('coffeeApp', ['ui.router', 'ngResource', 'ngFileUpload']);
+//var upload = require("../routes/upload");
 
 app.config(function($stateProvider, $urlRouterProvider){
     $urlRouterProvider.otherwise("/");
@@ -22,7 +23,7 @@ app.config(function($stateProvider, $urlRouterProvider){
         });
 });
 
-var fileName = "";
+/*var fileName = "";
 
 app.directive("fdInput", [function(){
       return{
@@ -35,7 +36,7 @@ app.directive("fdInput", [function(){
           });
         }
       }
-  }]);
+  }]);*/
 
 app.factory('userService', function($resource){
     //return $resource('/api/users/:id', { id: '@id' },
@@ -116,7 +117,14 @@ app.controller('adminController', function($scope, $resource, $stateParams, user
             headers: {
               'my-header': 'my-header-value'
             },
-            fields: { firstName : $scope.individualData.firstName },
+            fields: { firstName : $scope.individualData.firstName,
+                          lastName : $scope.individualData.lastName,
+                          email : $scope.individualData.email,
+                          numOfCups : $scope.individualData.numOfCups,
+                          currentBalance : $scope.individualData.currentBalance,
+                          totalNumOfCups : $scope.individualData.numOfCups,
+                          totalMoneySpent : $scope.individualData.currentBalance
+            },
             file: file,
             fileFormDataName: 'file'
           });
@@ -134,8 +142,9 @@ app.controller('adminController', function($scope, $resource, $stateParams, user
           // Math.min is to fix IE which reports 200% sometimes
           file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
         });
+        $scope.userData = userService.query();
+        $scope.individualData = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: '', picfile: ""};
       };
-
 
 
 
@@ -202,6 +211,7 @@ app.controller('adminController', function($scope, $resource, $stateParams, user
 
 
         $scope.addUser = function(){
+
             //$scope.onFileSelect();
 
 
@@ -246,7 +256,7 @@ app.controller('adminController', function($scope, $resource, $stateParams, user
 
 
 
-            $scope.newUser.firstName = $scope.individualData.firstName;
+            /*$scope.newUser.firstName = $scope.individualData.firstName;
             $scope.newUser.lastName = $scope.individualData.lastName;
             $scope.newUser.email = $scope.individualData.email;
             $scope.newUser.numOfCups = $scope.individualData.numOfCups;
@@ -260,7 +270,7 @@ app.controller('adminController', function($scope, $resource, $stateParams, user
                 $scope.newUser = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: '', photo: ""};
                 $scope.individualData = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: '', photo: ""};
                 //$scope.newUser = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: ''};
-            });
+            });*/
         };
 
         $scope.deleteUser = function(deleteId){

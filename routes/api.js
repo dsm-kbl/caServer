@@ -17,44 +17,66 @@ router.route('/upload/image')
     form.parse(req, function(err, fields, files) {
         console.log(files);
         console.log(fields);
-        var file = files.file[0];
-        var contentType = file.headers['content-type'];
-        var tmpPath = file.path;
-        var extIndex = tmpPath.lastIndexOf('.');
-        var extension = (extIndex < 0) ? '' : tmpPath.substr(extIndex);
-        // uuid is for generating unique filenames.
-        var fileName = uuid.v4() + extension;
-        var destPath = './public/img/' + fileName;
-        console.log(destPath);
 
-        // Server side file type checker.
-        if (contentType !== 'image/png' && contentType !== 'image/jpeg' && contentType !== 'image/jpg') {
-            fs.unlink(tmpPath);
-            return res.status(400).send('Unsupported file type.');
-        }
+        if(files.file[0].fieldName !== "empty"){
+            var file = files.file[0];
+            var contentType = file.headers['content-type'];
+            var tmpPath = file.path;
+            var extIndex = tmpPath.lastIndexOf('.');
+            var extension = (extIndex < 0) ? '' : tmpPath.substr(extIndex);
+            // uuid is for generating unique filenames.
+            var fileName = uuid.v4() + extension;
+            var destPath = './public/img/' + fileName;
+            console.log(destPath);
 
-        fs.rename(tmpPath, destPath, function(err) {
-            if (err) {
-                return res.status(400).send('Image is not saved:');
+            // Server side file type checker.
+            if (contentType !== 'image/png' && contentType !== 'image/jpeg' && contentType !== 'image/jpg') {
+                fs.unlink(tmpPath);
+                return res.status(400).send('Unsupported file type.');
             }
-            //return res.json(destPath);
+
+            fs.rename(tmpPath, destPath, function(err) {
+                if (err) {
+                    return res.status(400).send('Image is not saved:');
+                }
+                //return res.json(destPath);
+                var user = new User();
+                user.firstName = fields.firstName;
+                user.lastName = fields.lastName;
+                user.email = fields.email;
+                user.numOfCups = Number(fields.numOfCups);
+                user.currentBalance = Number(fields.currentBalance);
+                user.totalNumOfCups = Number(fields.numOfCups);
+                user.totalMoneySpent = Number(fields.currentBalance);
+                user.photo = destPath.substring(8);
+
+                user.save(function(err, user){
+                    if(err){
+                        return res.send(500, err);
+                    }
+                    return res.json(user);
+                });
+            });
+    }else{
+            var destPath = '/img/person-placeholder.jpg';
             var user = new User();
-        user.firstName = fields.firstName;
-        user.lastName = fields.lastName;
-        user.email = fields.email;
-        user.numOfCups = Number(fields.numOfCups);
-        user.currentBalance = Number(fields.currentBalance);
-        user.totalNumOfCups = Number(fields.numOfCups);
-        user.totalMoneySpent = Number(fields.currentBalance);
-        user.photo = destPath.substring(8);
+            user.firstName = fields.firstName;
+            user.lastName = fields.lastName;
+            user.email = fields.email;
+            user.numOfCups = Number(fields.numOfCups);
+            user.currentBalance = Number(fields.currentBalance);
+            user.totalNumOfCups = Number(fields.numOfCups);
+            user.totalMoneySpent = Number(fields.currentBalance);
+            console.log(destPath);
+            user.photo = destPath;
 
-        user.save(function(err, user){
-            if(err){
-                return res.send(500, err);
-            }
-            return res.json(user);
-        });
-        });
+            user.save(function(err, user){
+                if(err){
+                    return res.send(500, err);
+                }
+                return res.json(user);
+            });
+    }
     });
 });
 

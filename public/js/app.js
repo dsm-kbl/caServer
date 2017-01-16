@@ -81,10 +81,9 @@ app.controller('adminController', function($scope, $resource, $stateParams, user
 
         $scope.editUser = function(resetId){
             if(resetId == 'new'){
-              $scope.individualData = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: ''};
               $scope.edit = true;
               $scope.incomplete = true;
-
+              $scope.individualData = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: '', picfile: ''};
             }
             else{
               $scope.edit = false;
@@ -111,6 +110,8 @@ app.controller('adminController', function($scope, $resource, $stateParams, user
         $scope.error_message = '';
 
         $scope.onFileSelect = function(file) {
+          if(file){
+          console.log(file);
           file.upload = Upload.upload({
             url: '/api/upload/image',
             method: 'POST',
@@ -144,7 +145,18 @@ app.controller('adminController', function($scope, $resource, $stateParams, user
         });
         $scope.userData = userService.query();
         $scope.individualData = {firstName: "", lastName: "", email: "", numOfCups: "", currentBalance: "", totalNumOfCups: '', totalMoneySpent: '', picfile: ""};
+      }
+      else{
+            $scope.newUser.lastName = $scope.individualData.lastName;
+            $scope.newUser.email = $scope.individualData.email;
+            $scope.newUser.numOfCups = $scope.individualData.numOfCups;
+            $scope.newUser.currentBalance = $scope.individualData.currentBalance;
+            $scope.newUser.totalNumOfCups = $scope.individualData.numOfCups;
+            $scope.newUser.totalMoneySpent = $scope.individualData.currentBalance;
+            $scope.newUser.photo = "/img/photo-placeholder.png";
+      }
       };
+
 
 
 

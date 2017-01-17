@@ -15,10 +15,11 @@ h6 {
     font-weight: 700;
 }
 
-/*body{
+body{
     background: url("/img/Coffee_Background_Image.jpg") no-repeat fixed center;
-    background-size: 100% 100%;
-}*/
+    /*background-size: 100% 100%;*/
+    background-size: cover;
+}
 
 #main{
     margin-top: 80px;
